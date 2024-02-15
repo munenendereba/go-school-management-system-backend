@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"munenendereba/sms-backend/controllers"
@@ -7,11 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitializeRouter() *gin.Engine {
+func InitializeStudentRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/students", getStudents)
 
 	return r
+}
+
+func StudentsRoutes(route *gin.Engine) {
+	students := route.Group("/students")
+	students.GET("", getStudents)
 }
 
 func getStudents(ctx *gin.Context) {

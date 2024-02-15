@@ -2,10 +2,10 @@ package main
 
 import (
 	"munenendereba/sms-backend/db"
-	"munenendereba/sms-backend/router"
+	"munenendereba/sms-backend/routers"
 )
 
 func main() {
 	db.InitializeDatabase()
-	router.InitializeRouter().Run()
+	routers.InitializeRouter().Run()
 }
