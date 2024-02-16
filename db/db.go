@@ -28,7 +28,7 @@ func InitializeDatabase() {
 		port     = os.Getenv("DB_PORT")
 	)
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True", user, password, host, port, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", user, password, host, port, dbName)
 	DB, err = gorm.Open("mysql", dsn)
 
 	if err != nil {
