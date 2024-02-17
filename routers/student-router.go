@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"munenendereba/sms-backend/controllers"
 	"munenendereba/sms-backend/models"
 	"net/http"
@@ -18,16 +19,14 @@ func StudentsRoutes(route *gin.Engine) {
 }
 
 func getStudents(ctx *gin.Context) {
-	res, err := controllers.GetStudents()
+	students, err := controllers.GetStudents()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"students": res,
-	})
+	ctx.JSON(http.StatusOK, students)
 }
 
 func getStudent(ctx *gin.Context) {
@@ -40,8 +39,7 @@ func getStudent(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"student": student})
+	ctx.JSON(http.StatusOK, student)
 }
 
 func createStudent(ctx *gin.Context) {
@@ -65,9 +63,9 @@ func createStudent(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{
-		"student": res,
-	})
+	fmt.Println("res", res)
+
+	ctx.JSON(http.StatusCreated, res)
 }
 
 func updateStudent(ctx *gin.Context) {
@@ -93,9 +91,7 @@ func updateStudent(ctx *gin.Context) {
 
 	if res != nil {
 
-		ctx.JSON(http.StatusOK, gin.H{
-			"student": res,
-		})
+		ctx.JSON(http.StatusOK, res)
 	} else {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "student not found"})
 	}
