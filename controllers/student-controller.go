@@ -23,6 +23,11 @@ func GetStudent(admissionNumber string) (*models.Student, error) {
 	var student models.Student
 
 	res := db.DB.First(&student, "admissionNumber = ?", admissionNumber)
+
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
 	if res.RowsAffected == 0 {
 		return nil, fmt.Errorf("student with admission %s not found", admissionNumber)
 	}
@@ -39,9 +44,9 @@ func CreateStudent(student *models.Student) (*models.Student, error) {
 }
 
 func UpdateStudent(student *models.Student) (*models.Student, error) {
-	var studentToUpdate models.Student
+	var updatedStudent models.Student
 
-	result := db.DB.Model(&studentToUpdate).Where("admissionNumber = ?", student.AdmissionNumber).Updates(student)
+	result := db.DB.Model(&updatedStudent).Where("admissionNumber = ?", student.AdmissionNumber).Updates(student)
 
 	if result.RowsAffected < 1 {
 		if result.Error != nil {

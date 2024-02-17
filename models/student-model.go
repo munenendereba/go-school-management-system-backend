@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Tabler interface {
+type StudentTable interface {
 	TableName() string
 }
 
@@ -16,10 +16,10 @@ type Student struct {
 	AdmissionNumber  string    `json:"admissionNumber" gorm:"primarykey;column:admissionNumber"`
 	FirstName        *string   `json:"firstName" gorm:"column:firstName"`
 	LastName         *string   `json:"lastName" gorm:"column:lastName"`
-	MiddleName       string    `json:"middleName" gorm:"column:middleName"`
-	BirthCertificate string    `json:"birthCertificate" gorm:"column:birthCertificate"`
-	NemisNumber      string    `json:"nemisNumber" gorm:"column:nemisNumber"`
-	Gender           *string   `json:"gender" gorm:"column:gender;not null;omitempty"`
+	MiddleName       *string   `json:"middleName" gorm:"column:middleName"`
+	BirthCertificate *string   `json:"birthCertificate" gorm:"column:birthCertificate"`
+	NemisNumber      *string   `json:"nemisNumber" gorm:"column:nemisNumber"`
+	Gender           *string   `json:"gender" gorm:"column:gender;not null;"`
 	DateOfBirth      time.Time `json:"dateOfBirth" gorm:"column:dateOfBirth"`
 	Status           *string   `json:"status"`
 	DateJoined       time.Time `json:"dateJoined" gorm:"column:dateJoined"`
