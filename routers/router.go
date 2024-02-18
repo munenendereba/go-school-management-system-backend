@@ -6,6 +6,7 @@ func InitializeRouter() *gin.Engine {
 	router := gin.Default()
 
 	StudentsRoutes(router)
+	GuardianRoutes(router)
 
 	return router
 }

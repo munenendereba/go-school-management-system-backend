@@ -11,7 +11,7 @@ func (Guardian) TableName() string {
 }
 
 type Guardian struct {
-	Id              int       `gorm:"primarykey;autoIncrement"`
+	Id              int       `json:"id" gorm:"primarykey;autoIncrement"`
 	FirstName       *string   `json:"firstName" gorm:"column:firstName"`
 	LastName        *string   `json:"lastName" gorm:"column:lastName"`
 	MiddleName      *string   `json:"middleName" gorm:"column:middleName"`

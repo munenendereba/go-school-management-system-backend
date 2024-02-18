@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"fmt"
 	"munenendereba/sms-backend/controllers"
 	"munenendereba/sms-backend/models"
 	"net/http"
@@ -21,7 +20,7 @@ func StudentsRoutes(route *gin.Engine) {
 func getStudents(ctx *gin.Context) {
 	students, err := controllers.GetStudents()
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
 		return
@@ -63,8 +62,6 @@ func createStudent(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println("res", res)
-
 	ctx.JSON(http.StatusCreated, res)
 }
 
@@ -90,7 +87,6 @@ func updateStudent(ctx *gin.Context) {
 	}
 
 	if res != nil {
-
 		ctx.JSON(http.StatusOK, res)
 	} else {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "student not found"})
@@ -118,7 +114,5 @@ func deleteStudent(ctx *gin.Context) {
 				"message": "student deleted",
 			})
 		}
-
 	}
-
 }

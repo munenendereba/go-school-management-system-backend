@@ -29,7 +29,7 @@ func GetGuardian(id string) (*models.Guardian, error) {
 	}
 
 	if res.RowsAffected < 1 {
-		return nil, fmt.Errorf("guardian with id %s not found", id)
+		return nil, nil
 	}
 
 	return &guardian, nil

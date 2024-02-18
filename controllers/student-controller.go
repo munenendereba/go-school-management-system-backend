@@ -59,7 +59,6 @@ func UpdateStudent(student *models.Student) (*models.Student, error) {
 	return student, nil
 }
 
-// return bool - not found and error
 func DeleteStudent(admissionNumber string) (int64, error) {
 	var deletedStudent models.Student
 	res := db.DB.Where("admissionNumber = ?", admissionNumber).Delete(&deletedStudent)
