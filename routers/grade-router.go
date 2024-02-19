@@ -15,7 +15,7 @@ func GradeRoutes(route *gin.Engine) {
 	gradeRoutes.GET("/:id", getGrade)
 	gradeRoutes.POST("/", createGrade)
 	gradeRoutes.PUT("/", updateGrade)
-	gradeRoutes.DELETE("/", deleteGrade)
+	gradeRoutes.DELETE("/:id", deleteGrade)
 }
 
 func getGrades(ctx *gin.Context) {
