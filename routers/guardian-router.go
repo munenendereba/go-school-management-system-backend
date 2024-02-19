@@ -40,11 +40,15 @@ func getGuardian(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest,
 			gin.H{"error": err.Error()})
+
+		return
 	}
 
 	if guardian == nil {
 		ctx.JSON(http.StatusNotFound,
 			gin.H{"message": "guadian not found"})
+
+		return
 	}
 
 	ctx.JSON(http.StatusOK, guardian)

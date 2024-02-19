@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
 	"munenendereba/sms-backend/db"
 	models "munenendereba/sms-backend/models"
+
+	"github.com/jinzhu/gorm"
 )
 
 func GetStudents() ([]*models.Student, error) {
@@ -25,11 +25,11 @@ func GetStudent(admissionNumber string) (*models.Student, error) {
 	res := db.DB.First(&student, "admissionNumber = ?", admissionNumber)
 
 	if res.Error != nil {
-		return nil, res.Error
-	}
+		if gorm.IsRecordNotFoundError(res.Error) {
+			return nil, nil
+		}
 
-	if res.RowsAffected == 0 {
-		return nil, fmt.Errorf("student with admission %s not found", admissionNumber)
+		return nil, res.Error
 	}
 
 	return &student, nil
@@ -48,28 +48,23 @@ func UpdateStudent(student *models.Student) (*models.Student, error) {
 
 	result := db.DB.Model(&updatedStudent).Where("admissionNumber = ?", student.AdmissionNumber).Updates(student)
 
-	if result.RowsAffected < 1 {
-		if result.Error != nil {
-			return nil, errors.New("student not updated")
-		} else {
-			return nil, nil
-		}
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	return student, nil
+	if result.RowsAffected < 1 {
+		return nil, nil
+	}
+
+	return &updatedStudent, nil
 }
 
 func DeleteStudent(admissionNumber string) (int64, error) {
 	var deletedStudent models.Student
 	res := db.DB.Where("admissionNumber = ?", admissionNumber).Delete(&deletedStudent)
 
-	if res.RowsAffected < 1 {
-		//when no row deleted and no error, we assume record not found
-		if res.Error == nil {
-			return res.RowsAffected, nil
-		} else {
-			return res.RowsAffected, fmt.Errorf(res.Error.Error())
-		}
+	if res.Error != nil {
+		return res.RowsAffected, res.Error
 	}
 
 	return res.RowsAffected, nil

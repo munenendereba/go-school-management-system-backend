@@ -31,10 +31,16 @@ func getStudents(ctx *gin.Context) {
 func getStudent(ctx *gin.Context) {
 	admissionNumber := ctx.Param("admissionNumber")
 	student, err := controllers.GetStudent(admissionNumber)
+
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"error": err.Error(),
-		})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		return
+	}
+
+	if student == nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"message": "student not found"})
+
 		return
 	}
 

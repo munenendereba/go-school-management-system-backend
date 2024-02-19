@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
 	"munenendereba/sms-backend/db"
 	"munenendereba/sms-backend/models"
+
+	"github.com/jinzhu/gorm"
 )
 
 func GetGuardians() ([]*models.Guardian, error) {
@@ -25,6 +25,10 @@ func GetGuardian(id string) (*models.Guardian, error) {
 	res := db.DB.First(&guardian, "id = ?", id)
 
 	if res.Error != nil {
+		if gorm.IsRecordNotFoundError(res.Error) {
+			return nil, nil
+		}
+
 		return nil, res.Error
 	}
 
@@ -50,15 +54,15 @@ func UpdateGuardian(guardian *models.Guardian) (*models.Guardian, error) {
 
 	result := db.DB.Model(&updatedGuardian).Where("id = ?", guardian.Id).Updates(guardian)
 
-	if result.RowsAffected < 1 {
-		if result.Error != nil {
-			return nil, errors.New("guardian not updated")
-		} else {
-			return nil, nil
-		}
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	return guardian, nil
+	if result.RowsAffected < 1 {
+		return nil, nil
+	}
+
+	return &updatedGuardian, nil
 }
 
 func DeleteGuardian(id string) (int64, error) {
@@ -66,12 +70,8 @@ func DeleteGuardian(id string) (int64, error) {
 
 	res := db.DB.Where("id = ?", id).Delete(&deletedGuardian)
 
-	if res.RowsAffected < 1 {
-		if res.Error == nil {
-			return res.RowsAffected, nil
-		} else {
-			return res.RowsAffected, fmt.Errorf(res.Error.Error())
-		}
+	if res.Error != nil {
+		return res.RowsAffected, res.Error
 	}
 
 	return res.RowsAffected, nil

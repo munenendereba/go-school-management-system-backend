@@ -2,10 +2,6 @@ package models
 
 import "time"
 
-type GuardianTable interface {
-	TableName() string
-}
-
 func (Guardian) TableName() string {
 	return "guardian"
 }
